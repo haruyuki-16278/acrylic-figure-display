@@ -1,44 +1,80 @@
-module standbase() {
-  // base
-  cube([170, 80, 5]);
-
-  // steps
-  intersection(){
-    union() {
-      union() {
-        translate([85, 100, 5]){
-          cylinder(r=60, h=1);
-        }
-        translate([0, 120, 5]){
-          cylinder(r=80, h=1);
-        }
-        translate([170, 120, 5]){
-          cylinder(r=80, h=1);
-        }
-      }
-      union() {
-        translate([85, 100, 6]){
-          cylinder(r=58, h=1);
-        }
-        translate([0, 120, 6]){
-          cylinder(r=78, h=1);
-        }
-        translate([170, 120, 6]){
-          cylinder(r=78, h=1);
-        }
-      }
-      translate([85, 100, 7]){
-        cylinder(r=56, h=1);
-      }
-      translate([85, 100, 8]){
-        cylinder(r=54, h=1);
-      }
-    }
-    translate([0, 0, 5]) {
-      cube([170, 80, 5]);
+module speakerGroove() {
+  cube(size=[23, 23, 3]);
+  translate([7, 7, 3]) {
+    cube(size=[9, 16, 1.5]);
+  }
+  for(i=[3:16/7*2:19]) {
+    translate([3, i, -3]) {
+      cube(size=[17, 2.5, 3]);
     }
   }
 }
+
+module standbase() {
+  difference() {
+    union() {
+      // base
+      cube([170, 80, 5]);
+
+      // steps
+      intersection(){
+        union() {
+          union() {
+            translate([85, 100, 5]){
+              cylinder(r=60, h=1);
+            }
+            translate([0, 120, 5]){
+              cylinder(r=80, h=1);
+            }
+            translate([170, 120, 5]){
+              cylinder(r=80, h=1);
+            }
+          }
+          union() {
+            translate([85, 100, 6]){
+              cylinder(r=58, h=1);
+            }
+            translate([0, 120, 6]){
+              cylinder(r=78, h=1);
+            }
+            translate([170, 120, 6]){
+              cylinder(r=78, h=1);
+            }
+          }
+          translate([85, 100, 7]){
+            cylinder(r=56, h=1);
+          }
+          translate([85, 100, 8]){
+            cylinder(r=54, h=1);
+          }
+        }
+        translate([0, 0, 5]) {
+          cube([170, 80, 5]);
+        }
+      }
+    }
+    translate([85, -160, 0]) {
+      for(i=[0:12:360]) {
+        rotate([0, 0, i]) {
+          translate([194.5, 0, 0]) {
+            cylinder(r=3, h=10, center=true, $fn=60);
+          }
+        }
+      }
+    }
+    translate([26.5, 57, 4.5]) {
+      rotate([0, 180, 0]) {
+        speakerGroove();
+      }
+    }
+    translate([166.5, 57, 4.5]) {
+      rotate([0, 180, 0]) {
+        speakerGroove();
+      }
+    }
+  }
+}
+
 
 module mainDisplay() {
   difference() {
@@ -234,10 +270,10 @@ module sidedeco() {
 
 module groove() {
   rotate([0, 0, 6]) {
-    linear_extrude(height=2){
+    linear_extrude(height=3){
       difference() {
         circle(r=200, $fn=30);
-        circle(r=189);
+        circle(r=189, $fn=30);
       }
     }
   }
@@ -257,11 +293,11 @@ module backdeco() {
 // !backdeco();
 
 // main render
-// difference() {
+difference() {
   color("#2f2f2f"){
     difference() {
       standbase();
-      translate([85, -160, 3]){
+      translate([85, -160, 2]){
         groove();
       }
     }
@@ -318,10 +354,10 @@ module backdeco() {
       }
     }
   }
-// }
+}
 
 *mainDisplay();
 *bardeco();
-!backdeco();
+*backdeco();
 *logo();
 *sidedeco();
