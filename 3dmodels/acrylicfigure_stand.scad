@@ -3,6 +3,9 @@ module speakerGroove() {
   translate([7, 7, 3]) {
     cube(size=[9, 16, 1.5]);
   }
+  translate([0, 16, 3]) {
+    cube(size=[23, 7, 1.5]);
+  }
   for(i=[3:16/7*2:19]) {
     translate([3, i, -3]) {
       cube(size=[17, 2.5, 3]);
