@@ -4,14 +4,8 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 # 定数宣言
-ARDUINO_RSTPIN = 4
 SERIAL_PORT = '/dev/serial0'
 
-# 初期化
-### GPIO設定
-# GPIO.setmode(GPIO.BCM)
-# GPIO.setup(ARDUINO_RSTPIN, GPIO.OUT)
-# GPIO.setwarnings(False)
 ### シリアル通信(UART)設定
 ser = serial.Serial(SERIAL_PORT)
 ser.baudrate = 9600
@@ -19,11 +13,10 @@ ser.baudrate = 9600
 # 関数宣言
 ### Arduinoにリセットをかける関数
 def reset_arduino() -> None:
-    GPIO.output(ARDUINO_RSTPIN, True)
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(4, GPIO.OUT)
     sleep(0.01)
-    GPIO.output(ARDUINO_RSTPIN, False)
-    sleep(0.01)
-    GPIO.output(ARDUINO_RSTPIN, True)
+    GPIO.cleanup()
 
 ### Arduinoにシリアル通信で文字を送る関数(LCDに表示される)
 def send_string(text:str='') -> None:
@@ -32,4 +25,5 @@ def send_string(text:str='') -> None:
     ser.write(text.encode('utf-8'))
 
 send_string(text='python test')
-# GPIO.cleanup()
+sleep(10)
+reset_arduino()
