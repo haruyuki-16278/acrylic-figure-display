@@ -103,6 +103,7 @@ try:
     musics = get_musics_list()
     now_playing.wait_done()
     send_string('Not playing')
+    sleep(3)
     while(True):
         if not GPIO.input(LEFT_BTN):
             while(not GPIO.input(LEFT_BTN)):
@@ -120,6 +121,7 @@ try:
             if now_playing.is_playing():
                 now_playing.stop()
                 send_string('Not playing')
+                loop_enable = False
                 continue
             send_string('play music')
             sleep(2)
@@ -132,6 +134,9 @@ try:
             send_string('next')
             next_music()
             sleep(2)
+            now_playing = play_music()
+        if loop_enable and not now_playing.is_playing():
+            next_music()
             now_playing = play_music()
 
 finally:
