@@ -55,7 +55,7 @@ def get_musics_list() -> dict:
 
 ### ファイル/ディレクトリ名からナンバリングと拡張子を外す関数
 def remove_num_and_ext(string: str) -> str:
-    return string.split(' ')[1].split('.')[0]
+    return string.split(' ')[1].split('.')[0].replace('_', ' ')
 
 ### simpleaudioでファイルを再生する
 def play_file(file_path: str = '') -> sa.PlayObject:
