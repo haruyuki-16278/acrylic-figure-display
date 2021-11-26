@@ -2,8 +2,9 @@
 import os
 import serial
 import RPi.GPIO as GPIO
-from time import sleep
+from time import sleep, time
 import simpleaudio as sa
+import subprocess as sp
 
 # 定数宣言
 SERIAL_PORT = '/dev/serial0'
@@ -115,8 +116,12 @@ try:
             sleep(2)
             now_playing = play_music()
         if not GPIO.input(CENTER_BTN):
+            tmp_time = time()
             while(not GPIO.input(CENTER_BTN)):
                 sleep(0.01)
+                if(time() - tmp_time > 10):
+                    send_string('shutdown')
+                    sp.run(('/sbin/shutdown'))
             loop_enable = True
             if now_playing.is_playing():
                 now_playing.stop()
